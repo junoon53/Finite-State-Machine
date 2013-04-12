@@ -1,33 +1,35 @@
-StateMachine.prototype = {    
+stateMachine = {    
 
-        init: function(self,initValue) {
-             self._startState = initvalue;             
+        init: function(initValue) {
+            this._startState = initValue;             
         },
         start: function() {
-            if(typeof self._startState = "undefined") return false;
-             self._state = self._startState;
+            if(typeof this._startState === "undefined") return false;
+             this._state = this._startState;
         },
         step: function(input) {
-            if(typeof self.state = "undefined") return false;
-             var result = self.getNextValues(input,self._state);
-             self._state = result.nextState;
+            if(typeof this._state === "undefined") return false;
+             var result = this.getNextValues(input,this._state);
+             this._state = result.nextState;
              return result.output;
         },
-        get currentState: function() {
-            return self._state;
+        get currentState() {
+            return this._state;
         },
         transduce: function(inputs) {
             if(this.start()) {
                 var outputs = [];
-                for(var i=0,i<inputs.length,i++){
+                for(var i=0;i<inputs.length;i++){
                    outputs.push(this.step(inputs[i]));
                 };
                 return outputs;
             } else return false;
             
         },
-
+	getNextValues:function(input,state) {
+		return {nextState:input+state,output:input+state};		
+	}
 
 };
 
-
+module.exports.stateMachine = stateMachine;
