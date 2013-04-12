@@ -17,13 +17,12 @@ stateMachine = {
             return this._state;
         },
         transduce: function(inputs) {
-            if(this.start()) {
+            
                 var outputs = [];
                 for(var i=0;i<inputs.length;i++){
                    outputs.push(this.step(inputs[i]));
                 };
                 return outputs;
-            } else return false;
             
         },
 	getNextValues:function(input,state) {
