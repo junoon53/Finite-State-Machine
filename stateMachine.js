@@ -27,17 +27,7 @@ stateMachine = {
         },
 	getNextValues:function(input,state) {
 		return {nextState:input+state,output:input+state};		
-	},
-	cascade: function(machines,input) {
-		var output = input;
-
-		for(var i=0;i<machines.length;i++) {
-		   output = machines[i].step(output);	
-		}	 		
-			
-		return output;		
 	}
-
 };
 
 module.exports.stateMachine = stateMachine;
