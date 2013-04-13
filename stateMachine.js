@@ -3,12 +3,10 @@ stateMachine = {
         init: function(initValue) {
             this._startState = initValue;             
         },
-        start: function() {
-            if(typeof this._startState === "undefined") return false;
+        start: function() {            
              this._state = this._startState;
         },
-        step: function(input) {
-            if(typeof this._state === "undefined") return false;
+        step: function(input) {            
              var result = this.getNextValues(input,this._state);
              this._state = result.nextState;
              return result.output;
