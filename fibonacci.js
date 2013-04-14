@@ -1,33 +1,40 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
-var adder = require('./adder.js').adder;
-var delay1 = require('./delay.js').delay;
-var delay2 = require('./delay.js').delay;
-var delay3 = require('./delay.js').delay;
-var parallel = require('./parallel.js').parallel;
-var cascade = require('./cascade.js').cascade; 
+function fibonacci() {
 
-var fibonacci = Object.create(stateMachine);
+	var adder = require('./adder.js')();
+	var delay1 = require('./delay.js')();
+	var delay2 = require('./delay.js')();
+	var delay3 = require('./delay.js')();
+	var parallel = require('./parallel.js')();
+	var cascade1 = require('./cascade.js')(); 
+	var cascade2 = require('./cascade.js')();
+	var feedback = require('./feedback.js')();
 
-fibonacci.init = function(startState) {
-	delay1.init(startState);
-	delay2.init(startState);
-	delay3.init(0);
-	adder.init(0);
-	
-	this._startState = startState;
+	var self = this;
+
+	self.init = function() {
+		delay1.init(1);
+		delay2.init(1);
+		delay3.init(0);
+		cascade1.init([delay1,delay3]);
+		parallel.init([delay2,cascade1]);
+		cascade2.init([parallel,adder]);
+		feedback.init(cascade2);
+	};
+
+	self.start = function() {
+		delay1.start();	
+		delay2.start();
+		delay3.start();
+		parallel.start();
+		cascade2.start();	
+		feedback.start();	
+	};
+
+	self.step = function() {
+		return feedback.step();
+	};
+} 
+
+module.exports = function(){
+	return new fibonacci();
 };
-
-fibonacci.start = function() {
-	delay1.start();	
-	delay2.start();
-	delay3.start();
-	adder.start();
-	this._state = this._startState;	
-	
-};
-
-fibonacci.getNextValues = function(input) {
-	var output = 
-}; 
-
-module.exports.fibonacci = fibonacci;

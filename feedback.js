@@ -1,18 +1,20 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function feedback(){
+	var self = require('./stateMachine.js')();
 
-var feedback = Object.create(stateMachine);
+	self.init = function(machine) {
+		self._machine = machine;
+		self._startState = machine._startState;
+	};	 
 
-feedback.init = function(machine) {
-	this._machine = machine;
-	this._startState = machine._startState;
-}	 
+	self.getNextValues = function(input,state) {
+		var output1 = self._machine.getNextValues("undefined",state)
+		var output2 = self._machine.getNextValues(output1.output,state);
+		return {output:output1.output,nextState:output2.nextState};		
+	};
 
-feedback.getNextValues = function(input,state) {
-	var output1 = this._machine.getNextValues("undefined",state)
-	var output2 = this._machine.getNextValues(output1.output,state);
-	return {output:output1.output,nextState:output2.nextState};		
-}; 
+	return self; 
+};
 
-
-
-module.exports.feedback= feedback;
+module.exports = function(){
+	return new feedback();
+}

@@ -1,9 +1,14 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function delay(){
+	var self = require('./stateMachine.js')();
 
-var delay = Object.create(stateMachine);
+	self.getNextValues = function(input,state) {
+		if(input === "undefined") return {nextState:state,output:state};
+		return {nextState:input,output:state};
+	}; 
+	return self;
+};
 
-delay.getNextValues = function(input,state) {
-	return {nextState:input,output:state};
-}; 
 
-module.exports.delay = delay;
+module.exports = function(){
+	return new delay();
+};

@@ -1,14 +1,17 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
-
-var accumulator = Object.create(stateMachine);
-
-accumulator.getNextValues = function(input,state) {
-	if(input === "undefined") {
-		return {nextState:state,output:"undefined"};
-	} else {
-		return {nextState:state+input,output:state+input};	
-	}
+function accumulator(){
+	var self = require('./stateMachine.js')();
+	self.getNextValues = function(input,state) {
+		if(input === "undefined") {
+			return {nextState:state,output:"undefined"};
+		} else {
+			return {nextState:state+input,output:state+input};	
+		};
 	
-}; 
+	}; 
+	return self;
+};
 
-module.exports.accumulator = accumulator;
+
+module.exports = function() {
+	return new accumulator();
+};	

@@ -1,17 +1,29 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function parallel(){
+	var self = require('./stateMachine.js')();
+	
+	self.init = function(stateMachines) {
+		self._machines = stateMachines;
+		self._startState = [];
+		for(var i=0;i<stateMachines.length;i++) {
+			self._startState.push(stateMachines[i]._startState);
+		} 
+	};
+	self.getNextValues = function(input){
+		var output = [];
+		var nextState = [];
+		for(var i=0;i<self._machines.length;i++) {
+		    output.push(self._machines[i].step(input));	
+		};
+		for(var i=0;i<self._machines.length;i++) {
+			nextState.push(self._machines[i]._state);
+		};
 
-var parallel= Object.create(stateMachine);
+		return {output:output,nextState:nextState};
+	};
+	return self;
 
-parallel.init = function(stateMachines) {
-	this._startState = stateMachines;
-}
+};
 
-parallel.getNextValues = function(input,state) {
-	var output = [];
-	for(var i=0;i<state.length;i++) {
-	    output.push(state[i].step(input));	
-	}
-	return {output:output,nextState:state};
-}; 
-
-module.exports.parallel = parallel;
+module.exports = function(){
+	return new parallel();
+};

@@ -1,17 +1,30 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function cascade(){
 
-var cascade = Object.create(stateMachine);
+	var self = require('./stateMachine.js')();
 
-cascade.init = function(stateMachines) {
-	this._startState = stateMachines;
-}
+	self.init = function(stateMachines){
+		self._machines = stateMachines;
+		self._startState = [];
+		for(var i=0;i<stateMachines.length;i++) {
+			self._startState.push(stateMachines[i]._startState);
+		}
+	};
+	self.getNextValues = function(input,state) {
+		var output = input;
+		var nextState = [];
+		for(var i=0;i<self._machines.length;i++) {
+		    output = self._machines[i].step(output);	
+		}
 
-cascade.getNextValues = function(input,state) {
-	var output = input;
-	for(var i=0;i<state.length;i++) {
-	    output = state[i].step(output);	
-	}
-	return {output:output,nextState:state};
+		for(var i=0;i<self._machines.length;i++) {
+			nextState.push(self._machines[i]._state);
+		}
+
+		return {output:output,nextState:nextState};
+	}; 
+	return self;
 }; 
 
-module.exports.cascade = cascade;
+module.exports = function(){
+	return new cascade();
+};

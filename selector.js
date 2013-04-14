@@ -1,10 +1,12 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function selector(){
+	var self = require('./stateMachine.js')();
+	self.getNextValues = function(input) {
+		if(input === "undefined") return {output:"undefined:"};
+		return {output:input[self._startState]};
+	}; 
+	return self;
+};
 
-var selector = Object.create(stateMachine);
-
-selector.getNextValues = function(input) {
-	if(input === "undefined") return {output:"undefined:"};
-	return {output:input[this._startState]};
-}; 
-
-module.exports.selector = selector;
+module.exports = function(){
+	return new selector();
+};

@@ -1,14 +1,17 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function countUpNDown(){
+	var self = require('./stateMachine.js')();
 
-var countUpNDown = Object.create(stateMachine);
+	self.getNextValues = function(input,state) {
+		if(input === "undefined") return {nextState:state,output:"undefined"};
+		if(input == 'u') {
+		    	return {nextState:state+1,output:state+1};
+		} else {
+			return {nextState:state-1,output:state-1};
+		}
+	};
+	return self; 
+};
 
-countUpNDown.getNextValues = function(input,state) {
-	if(input === "undefined") return {nextState:state,output:"undefined"};
-	if(input == 'u') {
-	    	return {nextState:state+1,output:state+1};
-	} else {
-		return {nextState:state-1,output:state-1};
-	}
-}; 
-
-module.exports.countUpNDown = countUpNDown;
+module.exports = function(){
+	return new countUpNDown();
+};

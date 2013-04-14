@@ -1,12 +1,15 @@
-var stateMachine = require('./stateMachine.js').stateMachine;
+function increment() {
 
-var increment = Object.create(stateMachine);
+	var self = require('./stateMachine.js')();
+	self.getNextValues = function(input) {
+		if(input==="undefined") return {output:"undefined"};
+		return {output:input+self._startState};	
+	};
+	return self;
+}
 
 
-increment.getNextValues = function(input) {
-	if(input==="undefined") return {output:"undefined"};
-	return {output:input+this._startState};
-	
-}; 
 
-module.exports.increment = increment;
+module.exports = function() {
+	return new increment();
+};
