@@ -2,21 +2,22 @@ function feedbackAdd() {
 	var self = require('./stateMachine.js')();
 	var adder = require('./adder.js')();
 	var cascade = require('./cascade.js')();
+	var feedback2 = require('./feedback2.js')();
 
 	self.init = function(machine) {
 		cascade.init([adder,machine]);
-		self._startState = cascade._startState;
+		feedback2.init(cascade);
+		self._startState = feedback2._startState;
 	};
 
 	self.start = function() {
 		cascade.start();
-		self._state = cascade._startState;
+		feedback2.start();
+		self._state = self._startState;
 	};	 
 
-	self.step = function(input,state) {
-		var output1 = cascade.getNextValues([input],state);
-		var output2 = cascade.getNextValues([input,output1.output],state);
-		return {output:output1.output,nextState:output2.nextState};		
+	self.getNextValues = function(input,state) {
+		return feedback2.getNextValues(input,state);		
 	};
 	return self;
 };

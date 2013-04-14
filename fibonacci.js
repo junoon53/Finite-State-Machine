@@ -12,9 +12,9 @@ function fibonacci() {
 	var self = this;
 
 	self.init = function() {
-		delay1.init(1);
-		delay2.init(1);
-		delay3.init(0);
+		delay1.init(0);
+		delay2.init(0);
+		delay3.init(1);
 		cascade1.init([delay1,delay3]);
 		parallel.init([delay2,cascade1]);
 		cascade2.init([parallel,adder]);

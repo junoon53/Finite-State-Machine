@@ -1,4 +1,4 @@
-function adder() {
+function subtracter() {
 	var self = require('./stateMachine.js')();
 	self.getNextValues =function(inputs) {
 
@@ -6,7 +6,7 @@ function adder() {
 
 		for(var i=0;i<inputs.length;i++) {
 			if(inputs[i] === "undefined") return {output:"undefined"};
-			result+=inputs[i];
+			result-=inputs[i];
 		}
 		return {output:result};	
 	}; 
@@ -14,6 +14,6 @@ function adder() {
 };
 
 module.exports = function(){
-	return new adder();
+	return new subtracter();
 };
    
